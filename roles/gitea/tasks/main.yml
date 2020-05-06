@@ -2,5 +2,8 @@
 # tasks file for gitea - roles/gitea/tasks/main.yml
 - name: Download gitea.xz
   get_url:
-    url: https://github.com/go-gitea/gitea/releases/download/v1.11.4/gitea-1.11.4-linux-amd.xz
+    url: https://github.com/go-gitea/gitea/releases/download/v1.11.4/gitea-1.11.4-linux-amd64.xz
     dest: "/tmp/gitea-1.11.4-linux-amd.xz"
+  delegate_to: localhost
+  vars:
+    ansible_become: no
