@@ -1,0 +1,6 @@
+all:
+  hosts:
+  children:
+    giteaservers:
+      hosts: 
+        myohgserver.mydomain.com
