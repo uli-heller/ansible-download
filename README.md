@@ -56,13 +56,13 @@ Beobachtung: Ausführung klappt nicht, runterladen scheitert!
 ```
 $ ansible-playbook -i inventory.yml giteaservers.yml 
 ...
-TASK [gitea : Download gitea.xz] *********************************************************************************
-fatal: [myohgserver.mydomain.com]: FAILED! => {"changed": false, "dest": "/tmp/gitea-1.11.4-linux-amd64.xz", 
+TASK [gitea : Download gitea.xz] *************************************************************************
+fatal: [myohgserver.mydo...]: FAILED! => {"changed": false, "dest": "/tmp/gitea-1.11.4-linux-amd64.xz", 
   "elapsed": 0, "msg": "Request failed: <urlopen error [Errno -2] Name or service not known>",
   "url": "https://github.com/go-gitea/gitea/releases/download/v1.11.4/gitea-1.11.4-linux-amd64.xz"}
 
-PLAY RECAP *******************************************************************************************************
-myohgserver.mydomain.com   : ok=1    changed=0    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0
+PLAY RECAP ***********************************************************************************************
+myohgserver.mydo...: ok=1    changed=0    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0
 ```
 
 Problem: Der Download wird von meinem Server angestossen, nicht von meinem lokalen Rechner!
@@ -91,11 +91,11 @@ Beobachtung: Ausführung klappt!
 ```
 $ ansible-playbook -i inventory.yml giteaservers.yml 
 ...
-TASK [gitea : Download gitea.xz] *********************************************************************************
+TASK [gitea : Download gitea.xz] *************************************************************************
 changed: [myohgserver.mydomain.com -> localhost]
 
-PLAY RECAP *******************************************************************************************************
-myohgserver.mydomain.com   : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+PLAY RECAP ***********************************************************************************************
+myohgserver.mydo...: ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
 ```
 
 Task erneut ausführen: `ansible-playbook -i inventory.yml giteaservers.yml`
@@ -103,11 +103,11 @@ Task erneut ausführen: `ansible-playbook -i inventory.yml giteaservers.yml`
 ```
 $ ansible-playbook -i inventory.yml giteaservers.yml 
 ...
-TASK [gitea : Download gitea.xz] *********************************************************************************
+TASK [gitea : Download gitea.xz] *************************************************************************
 ok: [myohgserver.mydomain.com -> localhost]
 
-PLAY RECAP *******************************************************************************************************
-myohgserver.mydomain.com   : ok=2    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+PLAY RECAP ***********************************************************************************************
+myohgserver.mydo...: ok=2    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
 ```
 
 Beobachtung: Datei wird nicht erneut heruntergeladen - super!
@@ -138,19 +138,19 @@ Tasks ausführen: `ansible-playbook -i inventory.yml giteaservers.yml`
 
 ```
 $ ansible-playbook -i inventory.yml giteaservers.yml
-PLAY [giteaservers] **********************************************************************************************
+PLAY [giteaservers] **************************************************************************************
 
-TASK [Gathering Facts] *******************************************************************************************
+TASK [Gathering Facts] ***********************************************************************************
 ok: [myohgserver.mydomain.com]
 
-TASK [gitea : Download gitea.xz] *********************************************************************************
+TASK [gitea : Download gitea.xz] *************************************************************************
 ok: [myohgserver.mydomain.com -> localhost]
 
-TASK [gitea : Copy gitea.xz to myohgserver.mydomain.com] *********************************************************
+TASK [gitea : Copy gitea.xz to myohgserver.mydomain.com] *************************************************
 changed: [myohgserver.mydomain.com]
 
-PLAY RECAP *******************************************************************************************************
-myohgserver.mydomain.com   : ok=3    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+PLAY RECAP ***********************************************************************************************
+myohgserver.mydo...: ok=3    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
 ```
 
 Erneute Ausführung: Kein Herunterladen, kein Hochladen!
@@ -164,14 +164,16 @@ Beim Ausführen des Playbooks erscheint eine Fehlermeldung:
 
 ```
 $ ansible-playbook -i inventory.yml giteaservers.yml 
-PLAY [giteaservers] **********************************************************************************************
+PLAY [giteaservers] **************************************************************************************
 
-TASK [Gathering Facts] *******************************************************************************************
-fatal: [myohgserver.mydomain.com]: UNREACHABLE! => {"changed": false, "msg": "Failed to connect to the host via ssh:
- ssh: Could not resolve hostname myohgserver.mydomain.com: Name or service not known", "unreachable": true}
+TASK [Gathering Facts] ***********************************************************************************
+fatal: [myohgserver.mydomain.com]: UNREACHABLE! => {"changed": false, "msg": 
+ "Failed to connect to the host via ssh:
+ ssh: Could not resolve hostname myohgserver.mydomain.com: Name or service not known",
+ "unreachable": true}
 
-PLAY RECAP *******************************************************************************************************
-myohgserver.mydomain.com   : ok=0    changed=0    unreachable=1    failed=0    skipped=0    rescued=0    ignored=0   
+PLAY RECAP ***********************************************************************************************
+myohgserver.mydo...: ok=0    changed=0    unreachable=1    failed=0    skipped=0    rescued=0    ignored=0
 ```
 
 Abhilfe: Inventory anpassen!
