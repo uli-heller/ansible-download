@@ -112,6 +112,48 @@ myohgserver.mydomain.com   : ok=2    changed=0    unreachable=0    failed=0    s
 
 Beobachtung: Datei wird nicht erneut heruntergeladen - super!
 
+Download und Upload
+-------------------
+
+Task erweitern um Upload auf den Server:
+
+```
+---
+# tasks file for gitea - roles/gitea/tasks/main.yml
+- name: Download gitea.xz
+  get_url:
+    url: https://github.com/go-gitea/gitea/releases/download/v1.11.4/gitea-1.11.4-linux-amd64.xz
+    dest: "/tmp/gitea-1.11.4-linux-amd.xz"
+  delegate_to: localhost
+  vars:
+    ansible_become: no
+- name: Copy gitea.xz to {{inventory_hostname}}
+  copy:
+    src: "/tmp/gitea-1.11.4-linux-amd.xz"
+    dest: /tmp/.
+    mode: go-w
+```
+
+Tasks ausführen: `ansible-playbook -i inventory.yml giteaservers.yml`
+
+```
+$ ansible-playbook -i inventory.yml giteaservers.yml
+PLAY [giteaservers] **********************************************************************************************
+
+TASK [Gathering Facts] *******************************************************************************************
+ok: [myohgserver.mydomain.com]
+
+TASK [gitea : Download gitea.xz] *********************************************************************************
+ok: [myohgserver.mydomain.com -> localhost]
+
+TASK [gitea : Copy gitea.xz to myohgserver.mydomain.com] *********************************************************
+changed: [myohgserver.mydomain.com]
+
+PLAY RECAP *******************************************************************************************************
+myohgserver.mydomain.com   : ok=3    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+```
+
+Erneute Ausführung: Kein Herunterladen, kein Hochladen!
 
 Probleme
 --------

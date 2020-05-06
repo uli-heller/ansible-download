@@ -7,3 +7,8 @@
   delegate_to: localhost
   vars:
     ansible_become: no
+- name: Copy gitea.xz to {{inventory_hostname}}
+  copy:
+    src: "/tmp/gitea-1.11.4-linux-amd.xz"
+    dest: /tmp/.
+    mode: go-w
