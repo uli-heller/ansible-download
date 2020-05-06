@@ -1,0 +1,6 @@
+---
+# file: giteaservers.yml 
+- hosts: giteaservers     
+  serial: 1  
+  roles:
+    - gitea   
