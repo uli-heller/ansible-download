@@ -1,3 +1,5 @@
+---
+# file: inventory.yml
 all:
   hosts:
   children:
