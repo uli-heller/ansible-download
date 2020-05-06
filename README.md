@@ -155,6 +155,57 @@ myohgserver.mydo...: ok=3    changed=1    unreachable=0    failed=0    skipped=0
 
 Erneute Ausführung: Kein Herunterladen, kein Hochladen!
 
+Download/Upload nur wenn noch nicht vorhanden
+---------------------------------------------
+
+Der bisher erreichte Stand funktioniert im Wesentlichen.
+Wenn ich das Playbook aber auf mehreren verschiedenen Rechnern ausführe,
+dann wird GITEA jedesmal wieder heruntergeladen.
+
+Wir wollen diese Änderung:
+
+1. Prüfen, ob GITEA bereits auf dem Server vorhanden ist
+2. Nur wenn noch nicht vorhanden: GITEA herunterladen und hochladen
+
+Wir erreichen dies durch Erweitern der Tasks:
+
+```diff
+--- a/roles/gitea/tasks/main.yml
++++ b/roles/gitea/tasks/main.yml
+@@ -1,5 +1,12 @@
+ ---
+ # tasks file for gitea - roles/gitea/tasks/main.yml
++- name: Check for gitea.xz on {{inventory_hostname}}
++  command:
++    argv:
++    - "ls"
++    - "/tmp/gitea-1.11.4-linux-amd.xz"
++    creates: "/tmp/gitea-1.11.4-linux-amd.xz"
++  register: gitea_check_for_giteaxz
+ - name: Download gitea.xz
+   get_url:
+     url: https://github.com/go-gitea/gitea/releases/download/v1.11.4/gitea-1.11.4-linux-amd64.xz
+@@ -7,8 +14,10 @@
+   delegate_to: localhost
+   vars:
+     ansible_become: no
++  when: gitea_check_for_giteaxz.changed
+ - name: Copy gitea.xz to {{inventory_hostname}}
+   copy:
+     src: "/tmp/gitea-1.11.4-linux-amd.xz"
+     dest: /tmp/.
+     mode: go-w
++  when: gitea_check_for_giteaxz.changed
+```
+
+Weitere Verbesserungen
+----------------------
+
+Für einen produktiven Einsatz sind u.a. noch diese Verbesserungen notwendig:
+
+- Prüfen der Signaturen des Downloads
+- Einsatz von Variablen
+
 Probleme
 --------
 

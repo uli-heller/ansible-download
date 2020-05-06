@@ -1,5 +1,12 @@
 ---
 # tasks file for gitea - roles/gitea/tasks/main.yml
+- name: Check for gitea.xz on {{inventory_hostname}}
+  command:
+    argv:
+    - "ls"
+    - "/tmp/gitea-1.11.4-linux-amd.xz"
+    creates: "/tmp/gitea-1.11.4-linux-amd.xz"
+  register: gitea_check_for_giteaxz
 - name: Download gitea.xz
   get_url:
     url: https://github.com/go-gitea/gitea/releases/download/v1.11.4/gitea-1.11.4-linux-amd64.xz
@@ -7,8 +14,10 @@
   delegate_to: localhost
   vars:
     ansible_become: no
+  when: gitea_check_for_giteaxz.changed
 - name: Copy gitea.xz to {{inventory_hostname}}
   copy:
     src: "/tmp/gitea-1.11.4-linux-amd.xz"
     dest: /tmp/.
     mode: go-w
+  when: gitea_check_for_giteaxz.changed
