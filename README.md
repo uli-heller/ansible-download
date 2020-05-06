@@ -178,7 +178,7 @@ Wir erreichen dies durch Erweitern der Tasks:
 +- name: Check for gitea.xz on {{inventory_hostname}}
 +  command:
 +    argv:
-+    - "ls"
++    - "echo"
 +    - "/tmp/gitea-1.11.4-linux-amd.xz"
 +    creates: "/tmp/gitea-1.11.4-linux-amd.xz"
 +  register: gitea_check_for_giteaxz
