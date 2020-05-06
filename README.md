@@ -86,7 +86,7 @@ Task zum Runterladen anpassen:
 
 Task ausführen: `ansible-playbook -i inventory.yml giteaservers.yml`
 
-Beobachtung: Ausführung klappt nicht, runterladen scheitert!
+Beobachtung: Ausführung klappt!
 
 ```
 $ ansible-playbook -i inventory.yml giteaservers.yml 
@@ -98,7 +98,19 @@ PLAY RECAP *********************************************************************
 myohgserver.mydomain.com   : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
 ```
 
-Download klappt!
+Task erneut ausführen: `ansible-playbook -i inventory.yml giteaservers.yml`
+
+```
+$ ansible-playbook -i inventory.yml giteaservers.yml 
+...
+TASK [gitea : Download gitea.xz] *********************************************************************************
+ok: [myohgserver.mydomain.com -> localhost]
+
+PLAY RECAP *******************************************************************************************************
+myohgserver.mydomain.com   : ok=2    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+```
+
+Beobachtung: Datei wird nicht erneut heruntergeladen - super!
 
 
 Probleme
